@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Mary K](https://up.htmlacademy.ru/javascript/10/user/247297).
-* Наставник: `Неизвестно`.
+* Наставник: `Алексей Балесный`.
 
 ---
 
