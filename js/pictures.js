@@ -1,10 +1,10 @@
 'use strict';
+
 var randomLikeNumbers = function (min, max) {
   var randomLike = min - 0.5 + Math.random() * (max - min + 1);
   randomLike = Math.round(randomLike);
-  return randomLike
+  return randomLike;
 };
-randomLikeNumbers(15, 200);
 
 var randomComment = function () {
   var commentAll = [
@@ -15,62 +15,57 @@ var randomComment = function () {
     'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
-  return commentAll[Math.floor(Math.random() * commentAll.length)]
+  return commentAll[Math.floor(Math.random() * commentAll.length)];
 };
 
 var parameterObjects = [];
 var parameterObjectsCount = 25;
-var param;
 
-var parameterCallFunction = function () {
-  for (var i = 1; i <= parameterObjectsCount; i++) {
-    param = {
-      url: 'photos/' + i + '.jpg',
+var dataPush = function () {
+  for (var i = 0; i < parameterObjectsCount; i++) {
+    parameterObjects[i] = {
+      url: 'photos/' + (i + 1) + '.jpg',
       likes: randomLikeNumbers(15, 200),
       comments: randomComment()
     };
-    parameterObjects.push(param)
+    parameterObjects.push(parameterObjects[i]);
   }
-  return parameterObjects
+  return parameterObjects;
 };
 
-var photosData = parameterCallFunction();
+dataPush();
 
-
-var pictureTemplate = document.querySelector('#picture-template').content;
 var picturesField = document.querySelector('.pictures');
+var pictureTemplate = document.querySelector('#picture-template').content;
 
 
-var pictureAdd = function (objectNumber) {
+var pictureAddToGallery = function () {
   var pictureContent = pictureTemplate.cloneNode(true);
-  pictureContent.querySelector('img').setAttribute('src', 'url: parameterObjects[objectNumber.url]');
-  pictureContent.querySelector('.picture-likes').textContent = parameterObjects[objectNumber.likes];
-  pictureContent.querySelector('.picture-comments').textContent = parameterObjects[objectNumber.comments];
-  objectNumber = param;
-  return pictureContent
+  pictureContent.querySelector('img').setAttribute('src', parameterObjects[i].url.toString());
+  pictureContent.querySelector('.picture-likes').textContent = parameterObjects[i].likes;
+  pictureContent.querySelector('.picture-comments').textContent = parameterObjects[i].comments;
+  return pictureContent;
 };
 
-pictureAdd();
-
-var fragment = document.createDocumentFragment(parameterObjects[i]);
-for (var i = 1; i <= parameterObjects.length; i++) {
-  fragment.appendChild(pictureAdd(parameterObjects[i]));
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < parameterObjects.length; i++) {
+  fragment.appendChild(pictureAddToGallery(parameterObjects[i]));
 }
 picturesField.appendChild(fragment);
 
 var uploadOverlay = document.querySelector('.upload-overlay');
-uploadOverlay.classList.remove('hidden');
+uploadOverlay.classList.add('hidden');
 
 var galleryOverlay = document.querySelector('.gallery-overlay');
 galleryOverlay.classList.remove('hidden');
 
 var galleryOverlayShow = function (number) {
-  var galleryOverlay = pictureTemplate.cloneNode(true);
-  galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', 'url: parameterObjects[number.url]');
-  galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
-  galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
-  return galleryOverlay
+  var galleryOverlayContent = pictureTemplate.cloneNode(true);
+  galleryOverlayContent.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
+  galleryOverlayContent.querySelector('.likes-count').textContent = parameterObjects[number].likes;
+  galleryOverlayContent.querySelector('.comments-count').textContent = parameterObjects[number].comments;
+  galleryOverlay.appendChild(galleryOverlayContent);
 };
 
-galleryOverlayShow(1);
+galleryOverlayShow(0);
 
