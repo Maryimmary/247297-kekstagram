@@ -28,9 +28,7 @@ var dataPush = function () {
       likes: randomLikeNumbers(15, 200),
       comments: randomComment()
     };
-    parameterObjects.push(parameterObjects[i]);
   }
-  return parameterObjects;
 };
 
 dataPush();
@@ -61,8 +59,8 @@ galleryOverlay.classList.remove('hidden');
 
 var galleryOverlayShow = function (number) {
   var galleryOverlayContent = pictureTemplate.cloneNode(true);
-  galleryOverlayContent.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
-  galleryOverlayContent.querySelector('.likes-count').textContent = parameterObjects[number].likes;
+  galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
+  galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
   galleryOverlayContent.querySelector('.comments-count').textContent = parameterObjects[number].comments;
   galleryOverlay.appendChild(galleryOverlayContent);
 };
