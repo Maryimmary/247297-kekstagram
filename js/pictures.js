@@ -58,11 +58,9 @@ var galleryOverlay = document.querySelector('.gallery-overlay');
 galleryOverlay.classList.remove('hidden');
 
 var galleryOverlayShow = function (number) {
-  var galleryOverlayContent = pictureTemplate.cloneNode(true);
   galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
   galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
-  galleryOverlayContent.querySelector('.comments-count').textContent = parameterObjects[number].comments;
-  galleryOverlay.appendChild(galleryOverlayContent);
+  galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
 };
 
 galleryOverlayShow(0);
