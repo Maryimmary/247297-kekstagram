@@ -14,8 +14,8 @@
   "homepage": "https://github.com/htmlacademy-javascript/247297-kekstagram",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "3.9.0",
-    "eslint-config-htmlacademy": "0.2.x"
+    "eslint": "4.2.0",
+    "eslint-config-htmlacademy": "0.3.x"
   },
   "dependencies": {},
   "scripts": {
