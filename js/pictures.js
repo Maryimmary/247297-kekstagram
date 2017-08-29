@@ -36,7 +36,6 @@ dataPush();
 var picturesField = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture-template').content;
 
-
 var pictureAddToGallery = function () {
   var pictureContent = pictureTemplate.cloneNode(true);
   pictureContent.querySelector('img').setAttribute('src', parameterObjects[i].url.toString());
@@ -55,7 +54,7 @@ var uploadOverlay = document.querySelector('.upload-overlay');
 uploadOverlay.classList.add('hidden');
 
 var galleryOverlay = document.querySelector('.gallery-overlay');
-galleryOverlay.classList.remove('hidden');
+// galleryOverlay.classList.remove('hidden');
 
 var galleryOverlayShow = function (number) {
   galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
@@ -63,5 +62,15 @@ var galleryOverlayShow = function (number) {
   galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
 };
 
-galleryOverlayShow(0);
+galleryOverlayShow();
+
+// Пользовательский интерфейс
+
+var picture = document.querySelector('.picture');
+
+picture.addEventListener('click', function (event) {
+  event.preventDefault();
+  galleryOverlay.classList.remove('hidden');
+});
+
 
