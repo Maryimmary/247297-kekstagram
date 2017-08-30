@@ -53,67 +53,68 @@ picturesField.appendChild(fragment);
 var uploadOverlay = document.querySelector('.upload-overlay');
 uploadOverlay.classList.add('hidden');
 
-var galleryOverlay = document.querySelectorAll('.gallery-overlay');
-var galleryOverlayClose = document.querySelectorAll('.gallery-overlay-close');
+var galleryOverlay = document.querySelector('.gallery-overlay');
+var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
 
 var galleryOverlayShow = function (number) {
-  for (number = 0; number < parameterObjects.length; number++) {
-    galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
-    galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
-    galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
-  }
+  galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
+  galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
+  galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
   return galleryOverlay;
 };
 
 // Пользовательский интерфейс
-
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-
 var picture = document.querySelectorAll('.picture');
 
-var openGalleryOverlay = function () {
-  for (i = 0; i < parameterObjects.length; i++) {
-    picture[i].addEventListener('click', function (event) {
-      event.preventDefault();
-      for (i = 0; i < parameterObjects.length; i++) {
-        galleryOverlay[i].classList.remove('hidden');
-        galleryOverlayShow(i);
-      }
-    });
+// Функции
+var openOverlay = function () {
+  galleryOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onOverlayEscPress);
+};
+
+var closeOverlay = function () {
+  galleryOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onOverlayEscPress);
+};
+
+// Обработчики
+var onPictureClick = function (evt) {
+  evt.preventDefault();
+  openOverlay();
+};
+
+
+var onPictureEnterPress = function (evt) {
+  if (document.activeElement === picture && evt.keyCode === ENTER_KEYCODE) {
+    evt.preventDefault();
+    openOverlay();
   }
 };
-openGalleryOverlay();
 
-var closeGalleryOverlay = function () {
-  for (i = 0; i < parameterObjects.length; i++) {
-    galleryOverlayClose[i].addEventListener('click', function () {
-      galleryOverlay[i].classList.add('hidden');
-    });
+var onOverlayEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeOverlay();
   }
 };
-closeGalleryOverlay();
 
-if (document.activeElement === picture[i]) {
-  picture[i].addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      galleryOverlay[i].classList.remove('hidden');
-    }
-  });
-}
+var onCloseButtonEnterPress = function (evt) {
+  if (document.activeElement === galleryOverlayClose && evt.keyCode === ENTER_KEYCODE) {
+    closeOverlay();
+  }
+};
 
-if (document.activeElement === galleryOverlayClose[i]) {
-  galleryOverlayClose[i].addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      galleryOverlay[i].classList.add('hidden');
-    }
-  });
-}
+// События
+galleryOverlayClose.addEventListener('click', closeOverlay);
+galleryOverlayClose.addEventListener('keydown', onCloseButtonEnterPress);
+document.addEventListener('keydown', onOverlayEscPress);
 
-if (!galleryOverlay.classList.contains('hidden')) {
-  galleryOverlay.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      galleryOverlay[i].classList.add('hidden');
-    }
-  });
-}
+var pictureShow = function () {
+  for (i = 0; i < picture.length; i++) {
+    picture[i].addEventListener('click', onPictureClick);
+    picture[i].addEventListener('keydown', onPictureEnterPress);
+    galleryOverlayShow(i);
+  }
+};
+pictureShow();
