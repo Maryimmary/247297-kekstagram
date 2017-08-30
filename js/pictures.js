@@ -53,24 +53,67 @@ picturesField.appendChild(fragment);
 var uploadOverlay = document.querySelector('.upload-overlay');
 uploadOverlay.classList.add('hidden');
 
-var galleryOverlay = document.querySelector('.gallery-overlay');
-// galleryOverlay.classList.remove('hidden');
+var galleryOverlay = document.querySelectorAll('.gallery-overlay');
+var galleryOverlayClose = document.querySelectorAll('.gallery-overlay-close');
 
 var galleryOverlayShow = function (number) {
-  galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
-  galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
-  galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
+  for (number = 0; number < parameterObjects.length; number++) {
+    galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
+    galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
+    galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
+  }
+  return galleryOverlay;
 };
-
-galleryOverlayShow();
 
 // Пользовательский интерфейс
 
-var picture = document.querySelector('.picture');
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
-picture.addEventListener('click', function (event) {
-  event.preventDefault();
-  galleryOverlay.classList.remove('hidden');
-});
+var picture = document.querySelectorAll('.picture');
 
+var openGalleryOverlay = function () {
+  for (i = 0; i < parameterObjects.length; i++) {
+    picture[i].addEventListener('click', function (event) {
+      event.preventDefault();
+      for (i = 0; i < parameterObjects.length; i++) {
+        galleryOverlay[i].classList.remove('hidden');
+        galleryOverlayShow(i);
+      }
+    });
+  }
+};
+openGalleryOverlay();
 
+var closeGalleryOverlay = function () {
+  for (i = 0; i < parameterObjects.length; i++) {
+    galleryOverlayClose[i].addEventListener('click', function () {
+      galleryOverlay[i].classList.add('hidden');
+    });
+  }
+};
+closeGalleryOverlay();
+
+if (document.activeElement === picture[i]) {
+  picture[i].addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      galleryOverlay[i].classList.remove('hidden');
+    }
+  });
+}
+
+if (document.activeElement === galleryOverlayClose[i]) {
+  galleryOverlayClose[i].addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      galleryOverlay[i].classList.add('hidden');
+    }
+  });
+}
+
+if (!galleryOverlay.classList.contains('hidden')) {
+  galleryOverlay.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      galleryOverlay[i].classList.add('hidden');
+    }
+  });
+}
