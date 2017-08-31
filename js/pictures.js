@@ -85,14 +85,6 @@ var onPictureClick = function (evt) {
   openOverlay();
 };
 
-
-var onPictureEnterPress = function (evt) {
-  if (document.activeElement === picture && evt.keyCode === ENTER_KEYCODE) {
-    evt.preventDefault();
-    openOverlay();
-  }
-};
-
 var onOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeOverlay();
@@ -100,7 +92,7 @@ var onOverlayEscPress = function (evt) {
 };
 
 var onCloseButtonEnterPress = function (evt) {
-  if (document.activeElement === galleryOverlayClose && evt.keyCode === ENTER_KEYCODE) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     closeOverlay();
   }
 };
@@ -108,13 +100,14 @@ var onCloseButtonEnterPress = function (evt) {
 // События
 galleryOverlayClose.addEventListener('click', closeOverlay);
 galleryOverlayClose.addEventListener('keydown', onCloseButtonEnterPress);
-document.addEventListener('keydown', onOverlayEscPress);
 
-var pictureShow = function () {
-  for (i = 0; i < picture.length; i++) {
-    picture[i].addEventListener('click', onPictureClick);
-    picture[i].addEventListener('keydown', onPictureEnterPress);
+var setListener = function () {
+  picture[i].addEventListener('click', function () {
     galleryOverlayShow(i);
-  }
+    onPictureClick();
+  });
 };
-pictureShow();
+
+for (i = 0; i < picture.length; i++) {
+  setListener(i);
+}
