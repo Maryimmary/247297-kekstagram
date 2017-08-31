@@ -101,13 +101,13 @@ var onCloseButtonEnterPress = function (evt) {
 galleryOverlayClose.addEventListener('click', closeOverlay);
 galleryOverlayClose.addEventListener('keydown', onCloseButtonEnterPress);
 
-var setListener = function () {
-  picture[i].addEventListener('click', function () {
-    galleryOverlayShow(i);
-    onPictureClick();
+var setListener = function (index) {
+  picture[index].addEventListener('click', function (evt) {
+    galleryOverlayShow(index);
+    onPictureClick(evt);
   });
 };
 
-for (i = 0; i < picture.length; i++) {
-  setListener(i);
+for (var index = 0; index < picture.length; index++) {
+  setListener(index);
 }
