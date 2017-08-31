@@ -36,7 +36,6 @@ dataPush();
 var picturesField = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture-template').content;
 
-
 var pictureAddToGallery = function () {
   var pictureContent = pictureTemplate.cloneNode(true);
   pictureContent.querySelector('img').setAttribute('src', parameterObjects[i].url.toString());
@@ -55,13 +54,60 @@ var uploadOverlay = document.querySelector('.upload-overlay');
 uploadOverlay.classList.add('hidden');
 
 var galleryOverlay = document.querySelector('.gallery-overlay');
-galleryOverlay.classList.remove('hidden');
+var galleryOverlayClose = document.querySelector('.gallery-overlay-close');
 
 var galleryOverlayShow = function (number) {
   galleryOverlay.querySelector('.gallery-overlay-image').setAttribute('src', parameterObjects[number].url.toString());
   galleryOverlay.querySelector('.likes-count').textContent = parameterObjects[number].likes;
   galleryOverlay.querySelector('.comments-count').textContent = parameterObjects[number].comments;
+  return galleryOverlay;
 };
 
-galleryOverlayShow(0);
+// Пользовательский интерфейс
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+var picture = document.querySelectorAll('.picture');
 
+// Функции
+var openOverlay = function () {
+  galleryOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onOverlayEscPress);
+};
+
+var closeOverlay = function () {
+  galleryOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onOverlayEscPress);
+};
+
+// Обработчики
+var onPictureClick = function (evt) {
+  evt.preventDefault();
+  openOverlay();
+};
+
+var onOverlayEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeOverlay();
+  }
+};
+
+var onCloseButtonEnterPress = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeOverlay();
+  }
+};
+
+// События
+galleryOverlayClose.addEventListener('click', closeOverlay);
+galleryOverlayClose.addEventListener('keydown', onCloseButtonEnterPress);
+
+var setListener = function (index) {
+  picture[index].addEventListener('click', function (evt) {
+    galleryOverlayShow(index);
+    onPictureClick(evt);
+  });
+};
+
+for (var index = 0; index < picture.length; index++) {
+  setListener(index);
+}
