@@ -165,13 +165,13 @@ var resizeToMax = function () {
 
 var onButtonMinPress = function () {
   if (resizeValue > resizeMin) {
-    resizeToMin();
+    resizeValue = resizeControlValue.setAttribute('value', resizeToMin());
   }
 };
 
 var onButtonMaxPress = function () {
   if (resizeValue < resizeMax) {
-    resizeToMax();
+    resizeValue = resizeControlValue.setAttribute('value', resizeToMax());
   }
 };
 
@@ -184,18 +184,16 @@ var effectImagePreview = document.querySelector('.effect-image-preview');
 var effectControlsBlock = document.querySelector('.upload-effect-controls'); // Блок всех фильтров
 var uploadEffectButton = effectControlsBlock.getElementsByTagName('input');
 
-var getValueInput = function (event) {
+effectControlsBlock.onclick = function (event) {
   var target = event.target;
-  if (target === uploadEffectButton) {
-    var valueInput = uploadEffectButton.getAttribute('value');
+  if (target.tagName !== 'input') {
+    return;
   }
-  return valueInput;
+  target = target.value;
 };
 
-for (i = 0; i < uploadEffectButton.length; i++) {
-  uploadEffectButton[i].addEventListener('click', function () {
-    effectImagePreview.classList.add('effect-' + getValueInput());
-  });
-}
+effectControlsBlock.addEventListener('click', function (event) {
+  effectImagePreview.classList.add('effect-' + event.target.value);
+});
 
 
