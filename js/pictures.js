@@ -165,7 +165,7 @@ var resizeToMin = function () {
 };
 
 var resizeToMax = function () {
-  if ((resizeValue + resizeStep) <= resizeMax) {
+  if ((resizeValue + resizeStep) < resizeMax) {
     resizeValue = resizeValue + resizeStep;
   } else {
     resizeValue = resizeMax;
