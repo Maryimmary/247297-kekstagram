@@ -159,9 +159,7 @@ var resizeToMin = function () {
   } else {
     resizeValue = resizeMin;
   }
-
-  resizeControlValue.setAttribute('value', resizeValue + '%');
-  effectImagePreview.setAttribute('style', ('transform: scale(' + (resizeValue / 100) + ')'));
+  setValue();
 };
 
 var resizeToMax = function () {
@@ -170,7 +168,10 @@ var resizeToMax = function () {
   } else {
     resizeValue = resizeMax;
   }
+  setValue();
+};
 
+var setValue = function () {
   resizeControlValue.setAttribute('value', resizeValue + '%');
   effectImagePreview.setAttribute('style', ('transform: scale(' + (resizeValue / 100) + ')'));
 };
@@ -178,24 +179,35 @@ var resizeToMax = function () {
 resizeButtonMin.addEventListener('click', resizeToMin);
 resizeButtonMax.addEventListener('click', resizeToMax);
 
-
 // ФИЛЬТРЫ
 var effectControlsBlock = document.querySelector('.upload-effect-controls'); // Блок всех фильтров
 var uploadEffectPreview = document.querySelector('.upload-effect-preview'); // Блок с превью фильтра
+var effectInput = effectControlsBlock.querySelectorAll('input');
 
 uploadEffectPreview.setAttribute('tabIndex', '0');
 
-effectControlsBlock.onclick = function (event) {
+var clickAddEffect = function (event) {
   var target = event.target;
-  if (target.tagName !== uploadEffectPreview) {
+  if (target.tagName !== 'INPUT') {
     return;
   }
-  target = target.value;
+  checkCurrentEffect();
 };
 
-effectControlsBlock.addEventListener('click', function (event) {
-  effectImagePreview.classList.add('effect-' + event.target.value);
-});
+var checkCurrentEffect = function () {
+  for (i = 0; i < effectInput.length; i++) {
+    effectInput[i].getAttribute('value');
+    if (effectImagePreview.classList.contains('effect-' + effectInput[i].value)) {
+      effectImagePreview.classList.remove('effect-' + effectInput[i].value);
+      effectImagePreview.classList.add('effect-' + event.target.value);
+    } else {
+      effectImagePreview.classList.add('effect-' + event.target.value);
+    }
+  }
+};
+
+effectControlsBlock.addEventListener('click', clickAddEffect);
+
 
 // Хэш-теги
 /*
