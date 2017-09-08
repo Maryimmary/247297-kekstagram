@@ -221,28 +221,31 @@ var invalidDateHashField = function (message) {
   uploadFormHashtags.setAttribute('style', 'border-color: red');
 };
 
-// Создание массива
-var hashtagsValue = uploadFormHashtags.value;
-var arrayHashTags = hashtagsValue.split('');
-
-// Проверка на валидность
-uploadFormHashtags.addEventListener('invalid', function () {
-  for (var y = 0; y < arrayHashTags.length; y++) {
-    if (arrayHashTags.length > MAX_HASHTAG_COUNT) {
-      invalidDateHashField('В строке не может быть больше 5 хэштэгов');
-    } else if (arrayHashTags[y].length > MAX_HASHTAG_LENGTH) {
-      invalidDateHashField('Хэштэг не может содержать более 20 символов');
-    } else if (arrayHashTags[y].charAt(0) !== '#') {
-      invalidDateHashField('Хэштэг должен начинаться с символа #');
-    } else if (arrayHashTags[y].indexOf('#', 0) !== 0) {
-      invalidDateHashField('Хэштэг должен разделяться пробелом');
-    } else if (hashtagsValue[y] !== hashtagsValue[y] + 1) {
-      invalidDateHashField('Хэштэги не должны повторяться');
-    } else {
-      uploadFormHashtags.setCustomValidity('');
+// Функция валидации
+var addFormHashtagsValue = function () {
+  var hashtagsValue = uploadFormHashtags.value;
+  var arrayHashTags = hashtagsValue.split(' ');
+  if (arrayHashTags.length > MAX_HASHTAG_COUNT) {
+    invalidDateHashField('В строке не может быть больше 5 хэштэгов');
+  } else {
+    arrayHashTags.sort();
+    for (var y = 0; y < arrayHashTags.length; y++) {
+      if (arrayHashTags[y].charAt(0) !== '#') {
+        invalidDateHashField('Хэштэг должен начинаться с символа #');
+      } else if (arrayHashTags[y].indexOf('#', 0) !== 0) {
+        invalidDateHashField('Хэштэг должен разделяться пробелом');
+      } else if (hashtagsValue[y] === hashtagsValue[y + 1]) {
+        invalidDateHashField('Хэштэги не должны повторяться');
+      } else if (hashtagsValue[y].length > MAX_HASHTAG_LENGTH) {
+        invalidDateHashField('В хэштэге не должны быть более 20 символов');
+      }
     }
   }
-});
+  uploadFormHashtags.setCustomValidity('');
+};
+
+uploadFormHashtags.addEventListener('change', addFormHashtagsValue);
+
 
 // Установка атрибутов формы
 var uploadImageForm = document.getElementById('upload-select-image');
