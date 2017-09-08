@@ -210,14 +210,42 @@ effectControlsBlock.addEventListener('click', clickAddEffect);
 
 
 // Хэш-теги
-/*
-var uploadFormHashtags = document.querySelector('.upload-form-hashtags');
+var uploadFormHashtags = document.querySelector('.upload-form-hashtags'); // input-текст для хэш-тэга;
 
-uploadFormHashtags = {};
-var uploadFormHashtagsLength = 5;
+var MAX_HASHTAG_LENGTH = 20;
+var MAX_HASHTAG_COUNT = 5;
 
+// Функция вывода сообщения об ошибке
+var invalidDateHashField = function (message) {
+  uploadFormHashtags.setCustomValidity(message);
+  uploadFormHashtags.setAttribute('style', 'border-color: red');
+};
 
-for (i = 0; i < uploadFormHashtagsLength; i++) {
+// Создание массива
+var hashtagsValue = uploadFormHashtags.value;
+var arrayHashTags = hashtagsValue.split('');
 
-}*/
+// Проверка на валидность
+uploadFormHashtags.addEventListener('invalid', function () {
+  for (var y = 0; y < arrayHashTags.length; y++) {
+    if (arrayHashTags.length > MAX_HASHTAG_COUNT) {
+      invalidDateHashField('В строке не может быть больше 5 хэштэгов');
+    } else if (arrayHashTags[y].length > MAX_HASHTAG_LENGTH) {
+      invalidDateHashField('Хэштэг не может содержать более 20 символов');
+    } else if (arrayHashTags[y].charAt(0) !== '#') {
+      invalidDateHashField('Хэштэг должен начинаться с символа #');
+    } else if (arrayHashTags[y].indexOf('#', 0) !== 0) {
+      invalidDateHashField('Хэштэг должен разделяться пробелом');
+    } else if (hashtagsValue[y] !== hashtagsValue[y] + 1) {
+      invalidDateHashField('Хэштэги не должны повторяться');
+    } else {
+      uploadFormHashtags.setCustomValidity('');
+    }
+  }
+});
+
+// Установка атрибутов формы
+var uploadImageForm = document.getElementById('upload-select-image');
+uploadImageForm.setAttribute('action', 'https://1510.dump.academy/kekstagram');
+uploadImageForm.setAttribute('type', 'multipart/form-data');
 
