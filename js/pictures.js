@@ -220,7 +220,15 @@ var invalidDateHashField = function (message) {
   uploadFormHashtags.setAttribute('style', 'border-color: red');
 };
 
-// Функция валидации
+// Функция валидации поля комментариев
+var addDescriptionValue = function () {
+  userCommentForm.removeAttribute('required');
+  userCommentForm.removeAttribute('minlength');
+  userCommentForm.setAttribute('maxlength', '140');
+  userCommentForm.setCustomValidity('');
+};
+
+// Функция валидации хэш-тэгов
 var addFormHashtagsValue = function () {
   var hashtagsValue = uploadFormHashtags.value;
   var arrayHashTags = hashtagsValue.split(' ');
@@ -244,6 +252,7 @@ var addFormHashtagsValue = function () {
 };
 
 uploadFormHashtags.addEventListener('change', addFormHashtagsValue);
+userCommentForm.addEventListener('change', addDescriptionValue);
 
 
 // Установка атрибутов формы
