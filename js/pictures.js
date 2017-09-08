@@ -191,17 +191,16 @@ var clickAddEffect = function (event) {
   if (target.tagName !== 'INPUT') {
     return;
   }
-  checkCurrentEffect();
+  checkCurrentEffect(target);
 };
 
-var checkCurrentEffect = function () {
+var checkCurrentEffect = function (target) {
   for (i = 0; i < effectInput.length; i++) {
-    effectInput[i].getAttribute('value');
     if (effectImagePreview.classList.contains('effect-' + effectInput[i].value)) {
       effectImagePreview.classList.remove('effect-' + effectInput[i].value);
-      effectImagePreview.classList.add('effect-' + event.target.value);
+      effectImagePreview.classList.add('effect-' + target.value);
     } else {
-      effectImagePreview.classList.add('effect-' + event.target.value);
+      effectImagePreview.classList.add('effect-' + target.value);
     }
   }
 };
@@ -225,6 +224,7 @@ var invalidDateHashField = function (message) {
 var addFormHashtagsValue = function () {
   var hashtagsValue = uploadFormHashtags.value;
   var arrayHashTags = hashtagsValue.split(' ');
+  uploadFormHashtags.setCustomValidity('');
   if (arrayHashTags.length > MAX_HASHTAG_COUNT) {
     invalidDateHashField('В строке не может быть больше 5 хэштэгов');
   } else {
@@ -232,16 +232,15 @@ var addFormHashtagsValue = function () {
     for (var y = 0; y < arrayHashTags.length; y++) {
       if (arrayHashTags[y].charAt(0) !== '#') {
         invalidDateHashField('Хэштэг должен начинаться с символа #');
-      } else if (arrayHashTags[y].indexOf('#', 0) !== 0) {
+      } else if (arrayHashTags[y].lastIndexOf('#', 0) !== 0) {
         invalidDateHashField('Хэштэг должен разделяться пробелом');
-      } else if (hashtagsValue[y] === hashtagsValue[y + 1]) {
+      } else if (arrayHashTags[y] === arrayHashTags[y + 1]) {
         invalidDateHashField('Хэштэги не должны повторяться');
-      } else if (hashtagsValue[y].length > MAX_HASHTAG_LENGTH) {
+      } else if (arrayHashTags[y].length > MAX_HASHTAG_LENGTH) {
         invalidDateHashField('В хэштэге не должны быть более 20 символов');
       }
     }
   }
-  uploadFormHashtags.setCustomValidity('');
 };
 
 uploadFormHashtags.addEventListener('change', addFormHashtagsValue);
