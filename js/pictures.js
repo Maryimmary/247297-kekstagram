@@ -110,7 +110,6 @@ for (var index = 0; index < picture.length; index++) {
 }
 
 // ВАЛИДАЦИЯ ФОРМЫ
-
 var uploadFormImage = document.querySelector('.upload-image'); // Блок загрузки
 var uploadFile = document.getElementById('upload-file'); // Input загрузки  файлов
 var uploadOverlay = document.querySelector('.upload-overlay'); // Окно изменений
@@ -182,7 +181,7 @@ resizeButtonMax.addEventListener('click', resizeToMax);
 // ФИЛЬТРЫ
 var effectControlsBlock = document.querySelector('.upload-effect-controls'); // Блок всех фильтров
 var uploadEffectPreview = document.querySelector('.upload-effect-preview'); // Блок с превью фильтра
-var effectInput = effectControlsBlock.querySelectorAll('input');
+// var effectInput = effectControlsBlock.querySelectorAll('input');
 
 uploadEffectPreview.setAttribute('tabIndex', '0');
 
@@ -195,18 +194,15 @@ var clickAddEffect = function (event) {
 };
 
 var checkCurrentEffect = function (target) {
-  for (i = 0; i < effectInput.length; i++) {
-    if (effectImagePreview.classList.contains('effect-' + effectInput[i].value)) {
-      effectImagePreview.classList.remove('effect-' + effectInput[i].value);
-      effectImagePreview.classList.add('effect-' + target.value);
-    } else {
-      effectImagePreview.classList.add('effect-' + target.value);
-    }
+  if (effectImagePreview.className === 'effect-image-preview') {
+    effectImagePreview.classList.add('effect-' + target.value);
+  } else {
+    effectImagePreview.removeAttribute('class');
+    effectImagePreview.setAttribute('class', 'effect-image-preview' + ' ' + 'effect-' + target.value);
   }
 };
 
 effectControlsBlock.addEventListener('click', clickAddEffect);
-
 
 // Хэш-теги
 var uploadFormHashtags = document.querySelector('.upload-form-hashtags'); // input-текст для хэш-тэга;
@@ -253,7 +249,6 @@ var addFormHashtagsValue = function () {
 
 uploadFormHashtags.addEventListener('change', addFormHashtagsValue);
 userCommentForm.addEventListener('change', addDescriptionValue);
-
 
 // Установка атрибутов формы
 var uploadImageForm = document.getElementById('upload-select-image');
