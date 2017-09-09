@@ -236,7 +236,7 @@ var addFormHashtagsValue = function () {
     for (var y = 0; y < arrayHashTags.length; y++) {
       if (arrayHashTags[y].charAt(0) !== '#') {
         invalidDateHashField('Хэштэг должен начинаться с символа #');
-      } else if (arrayHashTags[y].lastIndexOf('#', 0) !== 0) {
+      } else if (arrayHashTags[y].lastIndexOf('#') !== 0) {
         invalidDateHashField('Хэштэг должен разделяться пробелом');
       } else if (arrayHashTags[y] === arrayHashTags[y + 1]) {
         invalidDateHashField('Хэштэги не должны повторяться');
